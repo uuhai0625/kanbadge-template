@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<script>
+  (function() {
+    var GA_ID = 'G-X9C6YJ7WYV';
+    var isLocalDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+    if (isLocalDev) return;
+    try { if (/[?&]no_ga=0/.test(location.search)) localStorage.removeItem('no_ga'); if (/[?&]no_ga=1/.test(location.search)) localStorage.setItem('no_ga', '1'); if (localStorage.getItem('no_ga') === '1') return; } catch (e) {}
+    var gaQ = new URLSearchParams(location.search); if (gaQ.get('obs') === '1' || gaQ.get('no_ga') === '1') return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+    document.addEventListener('click', function(e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href*="booth.pm"]') : null;
+      if (!a) return;
+      gtag('event', 'booth_click', { link_url: a.href, link_id: a.id || '', link_text: (a.textContent || '').trim().slice(0, 40) });
+    });
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="缶バッジのテンプレートを無料で作成。25・32・38・44・57・76mmから選んで画像の位置と大きさを合わせるだけで、巻き込み(側面に回る部分)つきの円をA4に並べて印刷・PNG保存。切る円の直径はマシンに合わせて変えられます。登録不要、画像はアップロードされません。">
+<link rel="canonical" href="https://uuhai0625.github.io/kanbadge-template/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="缶バッジテンプレートメーカー|32・44・57mmなど25〜76mmをA4に並べて印刷(無料)">
+<meta property="og:description" content="缶バッジのテンプレートを無料で作成。25・32・38・44・57・76mmから選んで画像の位置と大きさを合わせるだけで、巻き込み(側面に回る部分)つきの円をA4に並べて印刷・PNG保存。切る円の直径はマシンに合わせて変えられます。登録不要、画像はアップロードされません。">
+<meta property="og:url" content="https://uuhai0625.github.io/kanbadge-template/">
+<meta property="og:image" content="https://uuhai0625.github.io/kanbadge-template/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>缶バッジテンプレートメーカー|32・44・57mmなど25〜76mmをA4に並べて印刷(無料)</title>
+<style>
+  :root {
+    --bg: #f5f2f0;
+    --panel: #ffffff;
+    --border: #e0d8d4;
+    --field-border: #645a56;
+    --text: #26201e;
+    --muted: #5c5350;
+    --accent: #9a2f5a;
+    --accent-dark: #6f1f40;
+    --soft: #f7e9ef;
+    --ng: #b3261e;
+    --locked: #cfc4c0;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  header { background: var(--accent-dark); color: #fff; padding: 24px 20px 18px; text-align: center; }
+  header h1 { margin: 0 0 6px; font-size: 1.35rem; }
+  header p { margin: 0; font-size: .9rem; }
+  main { max-width: 1120px; margin: 0 auto; padding: 22px 16px 50px; }
+  main > * { min-width: 0; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "img pv" "size pv" "adj pv"; column-gap: 18px; align-items: start; }
+  .layout > * { min-width: 0; }
+  #img-card { grid-area: img; } #size-card { grid-area: size; } #adj-card { grid-area: adj; }
+  #pv-card { grid-area: pv; position: sticky; top: 12px; }
+  section.card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; }
+  section.card h2 { margin: 0 0 6px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  section.card h3 { margin: 14px 0 6px; font-size: .95rem; }
+  .desc { color: var(--muted); font-size: .84rem; margin: 0 0 12px; }
+  .fine { color: var(--muted); font-size: .8rem; margin: 8px 0 0; }
+  .badge { display: inline-block; font-size: .7rem; padding: 2px 8px; border-radius: 999px; background: #fff1cc; color: #7a5600; font-weight: bold; }
+  .hidden { display: none !important; }
+  label.field, div.field { display: block; margin-bottom: 12px; }
+  .lbl { font-size: .85rem; font-weight: bold; display: block; }
+  .hint { font-size: .78rem; color: var(--muted); font-weight: normal; display: block; margin-top: 2px; }
+  select, input[type=number], input[type=file] { margin-top: 5px; min-height: 44px; border: 1px solid var(--field-border); border-radius: 8px; font-size: 1rem; font-family: inherit; background: #fff; color: var(--text); width: 100%; padding: 8px 10px; }
+  input[type=color] { margin-top: 5px; min-height: 44px; width: 100%; border: 1px solid var(--field-border); border-radius: 8px; background: #fff; }
+  input[type=range] { width: 100%; min-height: 44px; accent-color: var(--accent); }
+  .row2 { display: flex; gap: 12px; }
+  .row2 > * { flex: 1; min-width: 0; }
+  .btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .btn { min-height: 44px; min-width: 44px; padding: 9px 16px; border-radius: 8px; font-size: .88rem; cursor: pointer; border: 1px solid var(--field-border); background: #fff; color: var(--text); font-family: inherit; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: bold; }
+  .btn.small { padding: 6px 12px; font-size: .82rem; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn:focus-visible, .nm:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, canvas:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 2px; }
+  .btn-row .btn { flex: 1; }
+  .chk { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: .88rem; cursor: pointer; }
+  .chk input { width: 20px; height: 20px; accent-color: var(--accent); }
+  .status { font-size: .82rem; color: var(--muted); margin-top: 6px; min-height: 1.2em; }
+  .status.err { color: var(--ng); font-weight: bold; }
+  .warn { font-size: .82rem; color: var(--ng); margin: 6px 0 0; min-height: 0; }
+  .pv { border: 1px solid var(--border); border-radius: 8px; background: #ebe6e3; padding: 10px; display: flex; justify-content: center; }
+  #ed { width: 100%; max-width: 420px; aspect-ratio: 1 / 1; height: auto; display: block; touch-action: none; cursor: grab; }
+  #ed.drag { cursor: grabbing; }
+  #sheet { max-width: 100%; max-height: 420px; width: auto; height: auto; display: block; box-shadow: 0 1px 4px rgba(0,0,0,.18); background: #fff; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .78rem; color: var(--muted); margin: 8px 0 0; padding: 0; list-style: none; }
+  .legend i { display: inline-block; width: 22px; height: 0; vertical-align: middle; margin-right: 5px; border-top: 2px solid #26201e; }
+  .legend i.cut { border-top: 1px solid #26201e; }
+  .legend i.fin { border-top: 2px solid #fff; outline: 1px solid #888; }
+  .legend i.safe { border-top: 2px dashed #26201e; }
+  .legend i.wrap { height: 10px; border: 0; background: rgba(30,20,20,.45); }
+  .sum { font-size: .84rem; margin: 10px 0 4px; font-weight: bold; color: var(--accent-dark); }
+  .pager { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 8px; }
+  .pager span { font-size: .86rem; font-weight: bold; min-width: 7em; text-align: center; }
+  .dlist { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+  .dlist li { display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 8px; padding: 4px 6px; }
+  .dlist li.on { border-color: var(--accent); background: var(--soft); }
+  .dlist canvas { width: 44px; height: 44px; flex: none; }
+  .dlist .nm { flex: 1; min-width: 0; font-size: .82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: none; border: 0; text-align: left; min-height: 44px; cursor: pointer; font-family: inherit; color: var(--text); }
+  .dlist input { width: 5.2em; margin: 0; }
+  .guide { font-size: .88rem; }
+  .guide h3 { font-size: .95rem; margin: 14px 0 4px; }
+  .guide ul, .guide ol { padding-left: 1.3em; margin: 6px 0; }
+  .guide li { margin: 4px 0; }
+  .guide table { border-collapse: collapse; font-size: .84rem; margin: 6px 0; }
+  .guide th, .guide td { border: 1px solid var(--border); padding: 4px 10px; text-align: center; }
+  .guide th { background: var(--soft); }
+  .locked-panel { border: 1px dashed var(--locked); border-radius: 10px; padding: 16px; text-align: center; color: var(--muted); background: #fbf9f8; }
+  .locked-panel .lead { color: var(--text); font-weight: bold; }
+  .locked-panel .feat-list { text-align: left; max-width: 620px; margin: 10px auto; font-size: .85rem; padding-left: 1.2em; }
+  .buy-btn { display: inline-block; margin-top: 8px; background: var(--accent-dark); color: #fff; font-weight: bold; padding: 11px 22px; border-radius: 999px; text-decoration: none; font-size: .9rem; }
+  footer { max-width: 1120px; margin: 0 auto; padding: 0 16px 40px; font-size: .8rem; color: var(--muted); }
+  footer a { color: var(--muted); }
+  #printArea { display: none; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "img" "pv" "adj" "size"; }
+    #pv-card { position: static; }
+  }
+  @media (max-width: 600px) {
+    .row2 { flex-direction: column; gap: 0; }
+    section.card { padding: 16px 12px; }
+  }
+  @media print {
+    body.printing > * { display: none !important; }
+    body.printing > #printArea { display: block !important; }
+    #printArea img { display: block; page-break-after: always; break-after: page; }
+    #printArea img:last-child { page-break-after: auto; break-after: auto; }
+  }
+</style>
+<style id="pageStyle">@page { size: A4 portrait; margin: 0; }</style>
+<!--ANSHIN_CSS_START--><style>:root{--anshin-w:1088px;--anshin-pad:16px}.anshin-strip,.anshin{box-sizing:border-box;width:min(var(--anshin-w),calc(100% - 2 * var(--anshin-pad)));margin-left:auto;margin-right:auto}.anshin-strip{list-style:none;margin-top:10px;margin-bottom:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:.8rem;line-height:1.5}.anshin-strip li{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border:1px solid rgba(20,120,90,.45);border-radius:999px;background:rgba(20,120,90,.07)}.anshin-strip li.anshin-more{border:0;background:none;padding:3px 2px}.anshin-strip a,.anshin a{color:inherit}.anshin{margin-top:18px;margin-bottom:18px;padding:14px 18px;border:1px solid rgba(20,120,90,.45);border-radius:10px;background:rgba(20,120,90,.05);font-size:.86rem;line-height:1.7}.anshin h2{font-size:1rem;margin:0 0 6px}.anshin p{margin:0 0 6px}.anshin ul{margin:0;padding-left:1.2em}.anshin li{margin:3px 0}.anshin details{margin-top:6px}.anshin summary{cursor:pointer;font-weight:bold}.anshin .anshin-meta{margin:8px 0 0;font-size:.8rem;opacity:.85}@media print{.anshin,.anshin-strip{display:none!important}}</style><!--ANSHIN_CSS_END-->
+<!--UPSELL_CSS_START--><style>.upsell-top{box-sizing:border-box;width:min(var(--anshin-w,880px),calc(100% - 2 * var(--anshin-pad,16px)));margin:12px auto 0;font-size:.85rem;line-height:1.6}.upsell-top a{color:inherit}.upsell-assure{list-style:none;margin:12px 0 10px;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px;font-size:.8rem;line-height:1.5}.upsell-assure li{padding:3px 10px;border:1px solid rgba(20,120,90,.45);border-radius:12px;background:rgba(20,120,90,.06)}.upsell-terms{margin:8px 0 0;font-size:.78rem;line-height:1.6;opacity:.85}.upsell-toast{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:9999;box-sizing:border-box;width:min(520px,calc(100% - 24px));padding:14px 56px 14px 16px;border-radius:12px;background:#fff;color:#222;border:1px solid #c9c2d6;box-shadow:0 6px 24px rgba(0,0,0,.18);font-size:.88rem;line-height:1.6}.upsell-toast p{margin:0 0 6px;font-weight:bold}.upsell-toast ul{margin:0 0 10px;padding-left:1.2em}.upsell-toast li{margin:2px 0}.upsell-toast .upsell-note{display:block;margin-top:6px;font-size:.75rem;color:#555}.upsell-toast .upsell-go{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:8px;background:#c9283e;color:#fff;font-weight:bold;text-decoration:none}.upsell-toast .upsell-go:focus-visible,.upsell-toast .upsell-x:focus-visible{outline:3px solid #2560c4;outline-offset:2px}.upsell-toast .upsell-x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:#555;font-size:1.3rem;line-height:1;cursor:pointer}.upsell-inline{white-space:nowrap;color:inherit;text-decoration:underline;text-underline-offset:2px}@media print{.upsell-top,.upsell-assure,.upsell-terms,.upsell-toast,.upsell-inline{display:none!important}}</style><!--UPSELL_CSS_END-->
+</head>
+<body>
+
+<header>
+  <h1>缶バッジテンプレートメーカー(25・32・38・44・57・76mm)</h1>
+  <p>画像を入れて位置と大きさを合わせるだけで、巻き込み(側面・裏に回る部分)つきの缶バッジ用データをA4に並べて印刷。登録不要・スマホでも使えます</p>
+</header>
+<!--ANSHIN_STRIP_START-->
+<ul class="anshin-strip" aria-label="データの扱い">
+  <li><span aria-hidden="true">✓</span> 入力内容はこの端末の中だけで処理</li>
+  <li><span aria-hidden="true">✓</span> 登録・ログイン不要</li>
+  <li><span aria-hidden="true">✓</span> 仕組みを公開中</li>
+  <li class="anshin-more"><a href="#anshin">データの扱いをくわしく</a></li>
+</ul>
+<!--ANSHIN_STRIP_END-->
+<!--UPSELL_TOP_START--><p class="upsell-top no-print" id="upsellTop">このページは無料のまま使えます。機能を増やしたい方は <a href="#pro-section">買い切り版(¥100・1回払い)<span aria-hidden="true"> ↓</span></a></p><!--UPSELL_TOP_END-->
+
+<main>
+<div class="layout">
+
+  <section class="card" id="img-card">
+    <h2>① 画像</h2>
+    <label class="field"><span class="lbl">画像を選ぶ</span>
+      <input type="file" id="inFile" accept="image/*">
+      <span class="hint">イラスト・写真(PNG・JPEGなど)。画像はどこにも送信されません</span>
+    </label>
+    <p class="status" id="imgSt" role="status"></p>
+    
+    <div class="field">
+      <label class="lbl" for="inCount">この絵柄の数</label>
+      <div class="row2" style="align-items:flex-end">
+        <input type="number" id="inCount" min="1" max="999" step="1" value="1" inputmode="numeric">
+        <button type="button" class="btn small" id="fillBtn" style="flex:none">1枚ぶん並べる</button>
+      </div>
+      <span class="hint" id="countHint"></span>
+    </div>
+    <p class="warn" id="imgWarn" role="status"></p>
+  </section>
+
+  <section class="card" id="size-card">
+    <h2>② 缶バッジのサイズ</h2>
+    <div class="row2">
+      <label class="field"><span class="lbl">できあがりの直径</span>
+        <select id="inSize">
+          <option value="25">25mm</option>
+          <option value="32">32mm</option>
+          <option value="38">38mm</option>
+          <option value="44">44mm</option>
+          <option value="57" selected>57mm</option>
+          <option value="76">76mm</option>
+        </select>
+      </label>
+      <label class="field"><span class="lbl">用紙を切る円の直径(mm)</span>
+        <input type="number" id="inCut" min="20" max="120" step="0.1" value="66.6" inputmode="decimal" aria-describedby="cutHint">
+      </label>
+    </div>
+    <p class="fine" id="cutHint">サイズを選ぶと一般的な目安が入ります。お使いのマシン・カッターの説明書に「切り抜きサイズ」「用紙サイズ」があれば、その数値に直してください(メーカーによって数mm違います)。</p>
+    <div class="row2" style="margin-top:12px">
+      <label class="field"><span class="lbl">用紙</span>
+        <select id="inPaper">
+          <option value="A4" selected>A4</option>
+          
+        </select>
+      </label>
+      <label class="field"><span class="lbl">紙の端の余白(mm)</span>
+        <input type="number" id="inMargin" min="0" max="30" step="0.5" value="4" inputmode="decimal" aria-describedby="mgHint">
+      </label>
+      <label class="field"><span class="lbl">円と円のすき間(mm)</span>
+        <input type="number" id="inGap" min="0" max="20" step="0.5" value="1" inputmode="decimal" aria-describedby="mgHint">
+      </label>
+    </div>
+    <p class="fine" id="mgHint">プリンターで端が切れるときは、余白を広げてください。</p>
+    <p class="warn" id="cutWarn" role="status"></p>
+  </section>
+
+  <section class="card" id="adj-card">
+    <h2>③ 位置と大きさ</h2>
+    <p class="desc">見本の上をドラッグするか、矢印のボタンで画像を動かせます。</p>
+    <div class="field"><label class="lbl" for="inZoom">大きさ <span id="zoomVal"></span></label>
+      <input type="range" id="inZoom" min="20" max="400" step="1" value="100">
+    </div>
+    <div class="row2">
+      <label class="field"><span class="lbl">背景の色(画像のすき間)</span><input type="color" id="inBg" value="#ffffff"></label>
+      <div class="field"><span class="lbl">向き・位置</span>
+        <div class="btn-row" style="margin-top:5px">
+          <button type="button" class="btn small" id="rotBtn">90°回す</button>
+          <button type="button" class="btn small" id="centerBtn">まん中に戻す</button>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row" role="group" aria-label="画像を少しずつ動かす">
+      <button type="button" class="btn small" data-mv="-1,0" aria-label="左へ動かす">←</button>
+      <button type="button" class="btn small" data-mv="0,-1" aria-label="上へ動かす">↑</button>
+      <button type="button" class="btn small" data-mv="0,1" aria-label="下へ動かす">↓</button>
+      <button type="button" class="btn small" data-mv="1,0" aria-label="右へ動かす">→</button>
+    </div>
+    <p class="status" id="posSt" role="status" aria-live="polite"></p>
+    <h3>印刷する線</h3>
+    <label class="chk"><input type="checkbox" id="inCutLine" checked> 切る線(用紙を切る円)</label>
+    <label class="chk"><input type="checkbox" id="inFinLine"> できあがりの線(点線・下書きの確認用)</label>
+    <label class="chk"><input type="checkbox" id="inCross"> 中心の十字(円を切るカッターで中心を合わせる用)</label>
+  </section>
+
+  <section class="card" id="pv-card">
+    <h2>見本</h2>
+    <div class="pv"><canvas id="ed" width="840" height="840" tabindex="0" role="img" aria-label="缶バッジの見本。矢印キーで画像を動かせます(Shiftを押しながらで大きく)"></canvas></div>
+    <ul class="legend" aria-label="見本の線の意味">
+      <li><i class="cut"></i>用紙を切る線</li>
+      <li><i class="wrap"></i>側面・裏に回る部分(巻き込み)</li>
+      <li><i class="fin"></i>表に見える範囲</li>
+      <li><i class="safe"></i>文字・顔はこの内側に</li>
+    </ul>
+    <label class="chk"><input type="checkbox" id="inLook"> できあがりの見え方(表だけ)で見る</label>
+    <p class="sum" id="sum"></p>
+    <div class="pv"><canvas id="sheet" width="420" height="594" role="img" aria-label="印刷する用紙の見本"></canvas></div>
+    <div class="pager hidden" id="pager">
+      <button type="button" class="btn small" id="prevBtn" aria-label="前の用紙">◀</button>
+      <span id="pageNo" aria-live="polite">1枚目 / 全1枚</span>
+      <button type="button" class="btn small" id="nextBtn" aria-label="次の用紙">▶</button>
+    </div>
+    <div class="status" id="outSt" role="status"></div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="printBtn" disabled aria-describedby="btnHint">印刷する</button>
+      <button type="button" class="btn" id="pngBtn" disabled>表示中の用紙を画像(PNG)で保存</button>
+      
+    </div>
+    
+    <p class="fine" id="btnHint"><span id="btnNeed">①で画像を選ぶと押せます。</span>印刷するときは、倍率を「100%」「実際のサイズ」にしてください(「用紙に合わせる」だと小さくなります)。用紙の下の50mmの線を定規で測ると確かめられます。スマホからは、画像で保存してネットプリントなどで「等倍」で印刷するのが確実です。</p>
+  </section>
+
+</div>
+
+  <section class="card" id="pro-section">
+    <h2>違う絵柄を1枚に並べる・A3・正方形の画像 <span class="badge">買い切り版 ¥100(税込)</span></h2>
+    <div class="locked-panel">
+      <p class="lead">1枚の用紙に、違う絵柄を混ぜて並べられます(用紙の節約に)。</p>
+      <p>このページの機能は無料でそのまま使えます。買い切り版(ダウンロード購入)では、次の機能が増えます:</p>
+      <ul class="feat-list">
+        <li><strong>絵柄を30種類まで</strong>: まとめて選んで、絵柄ごとに数を決めて自動で並べます(無料版は1種類)</li>
+        <li><strong>用紙20枚まで・ZIPで保存</strong>(無料版は1枚)</li>
+        <li><strong>A3用紙</strong>に並べられます</li>
+        <li><strong>絵柄ごとの正方形の画像</strong>: 350dpi・RGBで保存(大きさを指定。印刷所に頼むときは、その印刷所のテンプレート・色の指定に合わせてください)</li>
+        <li><strong>用紙にツール名が入りません</strong></li>
+        <li><strong>パソコンで使うHTMLファイルです</strong>(スマホでの動作は保証していません)。ダブルクリックで開くだけ、ネットにつながっていなくても使えます</li>
+      </ul>
+<!--UPSELL_ASSURE_START--><ul class="upsell-assure" aria-label="買い切り版について"><li>¥100(税込)の1回払い・月額なし</li><li>パソコン向けのHTMLファイル(スマホでは開けない機種あり)</li><li>ネットにつながっていなくても動く</li><li>BOOTHで購入(クレジットカード・楽天ペイは手数料なし、コンビニ・銀行払いは別途手数料)</li></ul><!--UPSELL_ASSURE_END-->
+      <a class="buy-btn" href="https://uuhai0625.booth.pm/items/8995370" id="buyLink" target="_blank" rel="noopener">パソコン用の買い切り版を見る(BOOTH・新しいタブ)</a><!--UPSELL_TERMS_START--><p class="upsell-terms">販売者の情報・返品などの販売条件は、BOOTHの商品ページでご確認ください。BOOTHでの購入にはpixivのアカウントが必要です。</p><!--UPSELL_TERMS_END-->
+    </div>
+  </section>
+
+  <section class="card guide" id="guide">
+    <h2>缶バッジのデータを作って印刷する方法</h2>
+    <ol>
+      <li>①で画像を選び、②で缶バッジのサイズを選びます。</li>
+      <li>見本の上をドラッグして位置を、「大きさ」で拡大・縮小を合わせます。暗い輪の部分は側面と裏に回るので、表からは見えません。表のふち近くも丸く曲がって見えにくくなるので、文字や顔は点線の内側に入れます。</li>
+      <li>「印刷する」で、倍率100%(実際のサイズ)で印刷します。切る線に沿って、はさみ・サークルカッター・缶バッジ用のカッターで切り抜きます。</li>
+    </ol>
+    <h3>サイズの目安(用紙を切る円の直径)</h3>
+    <table>
+      <thead><tr><th>できあがり</th><th>切る円の目安</th><th>A4に並ぶ数(余白4mm・すき間1mm・互い違いを含む)</th></tr></thead>
+      <tbody>
+        <tr><td>25mm</td><td>33.4mm</td><td>45個</td></tr>
+        <tr><td>32mm</td><td>41.4mm</td><td>28個</td></tr>
+        <tr><td>38mm</td><td>46.7mm</td><td>24個</td></tr>
+        <tr><td>44mm</td><td>53mm</td><td>18個</td></tr>
+        <tr><td>57mm</td><td>66.6mm</td><td>12個</td></tr>
+        <tr><td>76mm</td><td>87.8mm</td><td>6個</td></tr>
+      </tbody>
+    </table>
+    <p class="fine">切る円の直径は、缶バッジマシン・カッターのメーカーによって違います。説明書やカッターの「切り抜きサイズ」に合わせて、②の数値を直してください。</p>
+    <h3>よくある質問</h3>
+    <ul>
+      <li><strong>印刷したら小さい・大きい?</strong> 印刷の設定で倍率が「用紙に合わせる」になっていると縮みます。「100%」「実際のサイズ」を選んでください。用紙の下の50mmの線で確かめられます。</li>
+      <li><strong>コンビニで印刷したい</strong> 「用紙を画像(PNG)で保存」した画像を、ネットプリントなどで「等倍」「A4」で印刷してください(拡大・縮小されると直径がずれます)。</li>
+      <li><strong>紙の厚さは?</strong> 普通紙や薄手の光沢紙(0.1〜0.15mmくらい)が目安です。厚い写真用紙は、きれいに巻き込めないことがあります。マシンの説明書も確かめてください。</li>
+      <li><strong>画像がぼやける?</strong> 画像が小さいと、拡大されてぼやけます。①に「画像が小さめ」と出たら、大きい画像を使うか、大きさを小さくしてください(目安は300dpi前後)。</li>
+      <li><strong>印刷所に頼むときは?</strong> 印刷所ごとにテンプレートの大きさや色の指定(CMYKなど)が決まっています。必ずその印刷所のテンプレートと入稿ルールに合わせてください。このツールで作れる画像はRGBです。</li>
+      <li><strong>アニメやゲームのキャラクターを使っていい?</strong> 自分で一から描いた絵や、自分で撮った写真(写っている人の了解があるもの)なら使えます。アニメ・ゲームのキャラクターは、自分で描いた絵でも、公式の画像やほかの人の絵と同じく、自分や家族で楽しむ範囲にとどめてください。売る・配る・印刷所に頼んで刷るのは、この範囲を超えます。二次創作のグッズは、作品ごとのガイドラインを必ず確かめてください。</li>
+      <li><strong>画像はどこかに送られる?</strong> 送られません。すべてこのブラウザの中で処理します。</li>
+    </ul>
+  </section>
+
+</main>
+
+<!--ANSHIN_START-->
+<section class="anshin" id="anshin" aria-labelledby="anshin-title">
+  <h2 id="anshin-title">データの扱いについて</h2>
+  <p>このページには、入力した内容を受け取る仕組みがありません。文字も画像も、あなたのスマホやパソコンの中だけで処理されます。</p>
+  <ul>
+    <li>画像などのファイルを選んでも、アップロードはされません。端末の中で読み込んで処理します。</li>
+    <li>会員登録・ログイン・メールアドレスの入力はありません。</li>
+    <li>自分で確かめたい方へ: ページを開いたあと機内モードにしても、そのまま使えます。</li>
+  </ul>
+  <details>
+    <summary>もっとくわしく(保存・アクセス解析・公開について)</summary>
+    <ul>
+      <li>保存されるデータは、この端末のこのブラウザの中にだけ残ります(localStorage・sessionStorage)。共用のパソコンでは使い終わったら消してください。</li>
+      <li>アクセス解析(Google Analytics)のため、見たページのURL・参照元・端末やブラウザの種類・おおよその地域(IPアドレスから推定)・Cookieの識別子・BOOTHへのリンクのクリック・どのボタンを押したか(回数や選んだ設定を含む)がGoogleに送られます。目的は利用状況の把握です。入力した文字や画像は送りません。(<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleによるデータの使用</a>/<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">計測を止めるアドオン</a>。止めてもツールはそのまま使えます)</li>
+      <li>このツールの結果や作成物は目安です。入稿・契約・販売などの前には、印刷所や公式の情報でご確認ください。</li>
+      <li>処理の中身はすべて公開しています(詳しい方向け: <a href="https://github.com/uuhai0625/kanbadge-template" target="_blank" rel="noopener">GitHub</a>)。</li>
+    </ul>
+  </details>
+  <p class="anshin-meta">作っている人: ウーハイ(個人開発)/不具合・ご質問は<a href="https://x.com/uuhai0625" target="_blank" rel="noopener">X(@uuhai0625)</a>へ/<a href="https://uuhai0625.github.io/" target="_blank" rel="noopener">ほかのツール</a>/この説明の更新日: 2026-10-13</p>
+</section>
+<!--ANSHIN_END-->
+
+<footer>
+  <p id="privacyNote">本ツールは完全にブラウザ内で動作し、選んだ画像はどこにも送信されません。</p>
+  <p><a href="https://uuhai0625.booth.pm/" target="_blank" rel="noopener">他のツールも見る(BOOTHショップ)</a></p>
+  <p>不具合・ご要望は X <a href="https://x.com/uuhai0625" target="_blank" rel="noopener">@uuhai0625</a> まで。</p>
+  <p class="related-tools no-print">関連する無料ツール: <a href="https://uuhai0625.github.io/uchiwa-moji-maker/" target="_blank" rel="noopener">うちわ文字メーカー</a> ・ <a href="https://uuhai0625.github.io/nefuda-maker/" target="_blank" rel="noopener">値札メーカー</a> ・ <a href="https://uuhai0625.github.io/oshinagaki-maker/" target="_blank" rel="noopener">お品書きメーカー</a> ・ <a href="https://uuhai0625.github.io/#free-tools">ツール一覧</a></p>
+</footer>
+
+<div id="printArea"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var EDITION = "free"; // "full" で買い切り完全版
+
+  function track(name, params) {
+    if (!window.dataLayer) return;
+    (function () { window.dataLayer.push(arguments); })("event", name, params || {});
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  function setSt(id, msg, err) { var e = $(id); if (!e) return; e.textContent = msg; e.classList.toggle("err", !!err); }
+
+  var MAX_DESIGNS = 1, MAX_PAGES = 1, CREDIT = true;
+  
+  var PAPERS = { A4: [210, 297], A3: [297, 420] };
+  // できあがりの直径 → 用紙を切る円の目安(家庭用マシン・カッターの切り抜きサイズの一般的な値)
+  var CUT = { "25": 33.4, "32": 41.4, "38": 46.7, "44": 53, "57": 66.6, "76": 87.8 };
+  var SAFE_MM = 2, NYUKO_DPI = 350, MAX_IMG_PX = 4000;
+  // A3は300dpiだと大きすぎる(1枚1700万画素)ので200dpiにする
+  function sheetDpi(C) { return C.paper === "A3" ? 200 : 300; }
+
+  var designs = [], cur = -1, sheetPage = 0;
+  function D() { return designs[cur] || null; }
+  function num(id, def, lo, hi) { var v = parseFloat($(id).value); if (!isFinite(v)) v = def; return Math.max(lo, Math.min(hi, v)); }
+  function conf() {
+    var fin = +$("inSize").value || 57;
+    var cut = num("inCut", CUT[fin] || fin + 9, fin + 1, 150);
+    var paper = PAPERS[$("inPaper").value] ? $("inPaper").value : "A4";
+    return { fin: fin, cut: cut, paper: paper, W: PAPERS[paper][0], H: PAPERS[paper][1], m: num("inMargin", 4, 0, 30), g: num("inGap", 1, 0, 20) };
+  }
+
+  // ===== 並べ方(格子と互い違いの多いほう) =====
+  function pack(C) {
+    var d = C.cut, p = d + C.g, aw = C.W - 2 * C.m, ah = C.H - 2 * C.m, out = [];
+    if (aw < d || ah < d) return out;
+    var cols = Math.floor((aw + C.g) / p), rows = Math.floor((ah + C.g) / p);
+    var grid = [];
+    var gx = C.m + (aw - (cols * p - C.g)) / 2, gy = C.m + (ah - (rows * p - C.g)) / 2;
+    for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) grid.push([gx + c * p + d / 2, gy + r * p + d / 2]);
+    var rs = p * Math.sqrt(3) / 2, hrows = Math.floor((ah - d) / rs) + 1;
+    var ce = Math.floor((aw + C.g) / p), co = Math.floor((aw - p / 2 + C.g) / p), hex = [];
+    if (hrows > 1 && co > 0) {
+      var bw = Math.max(ce * p - C.g, p / 2 + co * p - C.g), hx = C.m + (aw - bw) / 2, hy = C.m + (ah - ((hrows - 1) * rs + d)) / 2;
+      for (var r2 = 0; r2 < hrows; r2++) {
+        var odd = r2 % 2 === 1, n = odd ? co : ce;
+        for (var c2 = 0; c2 < n; c2++) hex.push([hx + (odd ? p / 2 : 0) + c2 * p + d / 2, hy + r2 * rs + d / 2]);
+      }
+    }
+    return hex.length > grid.length ? hex : grid;
+  }
+
+  // ===== 絵柄を描く =====
+  // shape: "cut"=切る円で切り抜き / "square"=正方形いっぱい(入稿用)
+  function drawDesign(ctx, d, cx, cy, Rpx, shape, half) {
+    ctx.save();
+    ctx.beginPath();
+    if (shape === "square") ctx.rect(cx - half, cy - half, half * 2, half * 2);
+    else ctx.arc(cx, cy, Rpx, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.fillStyle = d.bg; ctx.fillRect(cx - Math.max(Rpx, half || 0), cy - Math.max(Rpx, half || 0), Math.max(Rpx, half || 0) * 2, Math.max(Rpx, half || 0) * 2);
+    if (d.img) {
+      var iw = d.img.width, ih = d.img.height, sw = d.rot % 2 ? ih : iw, sh = d.rot % 2 ? iw : ih;
+      var s = (2 * Rpx / Math.min(sw, sh)) * d.zoom;
+      ctx.translate(cx + d.ox * 2 * Rpx, cy + d.oy * 2 * Rpx);
+      ctx.rotate(d.rot * Math.PI / 2);
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(d.img, -iw * s / 2, -ih * s / 2, iw * s, ih * s);
+    }
+    ctx.restore();
+  }
+  // 画像の実際の細かさ(dpi)
+  function effDpi(d, C) {
+    if (!d || !d.img) return 0;
+    var sw = d.rot % 2 ? d.img.height : d.img.width, sh = d.rot % 2 ? d.img.width : d.img.height;
+    var mmPerPx = C.cut * d.zoom / Math.min(sw, sh);
+    return 25.4 / mmPerPx;
+  }
+
+  // ===== 見本(1つを大きく) =====
+  var ed = $("ed"), ectx = ed.getContext("2d");
+  function drawEditor() {
+    var C = conf(), d = D(), S = ed.width, look = $("inLook").checked;
+    ectx.clearRect(0, 0, S, S);
+    ectx.fillStyle = "#ebe6e3"; ectx.fillRect(0, 0, S, S);
+    var Rcut = S * 0.46, k = Rcut / (C.cut / 2), Rfin = C.fin / 2 * k, Rsafe = Math.max(1, (C.fin / 2 - SAFE_MM) * k), cx = S / 2, cy = S / 2;
+    var dd = d || { img: null, bg: "#ffffff", zoom: 1, ox: 0, oy: 0, rot: 0 };
+    if (look) {
+      // 表に見える範囲だけを、缶バッジらしく
+      ectx.save(); ectx.beginPath(); ectx.arc(cx, cy, Rfin, 0, Math.PI * 2); ectx.clip();
+      drawDesign(ectx, dd, cx, cy, Rcut, "cut");
+      var gr = ectx.createRadialGradient(cx - Rfin * 0.4, cy - Rfin * 0.5, Rfin * 0.05, cx, cy, Rfin);
+      gr.addColorStop(0, "rgba(255,255,255,.35)"); gr.addColorStop(0.5, "rgba(255,255,255,0)"); gr.addColorStop(1, "rgba(0,0,0,.18)");
+      ectx.fillStyle = gr; ectx.fillRect(cx - Rfin, cy - Rfin, Rfin * 2, Rfin * 2);
+      ectx.restore();
+      ectx.strokeStyle = "rgba(0,0,0,.35)"; ectx.lineWidth = 3; ectx.beginPath(); ectx.arc(cx, cy, Rfin, 0, Math.PI * 2); ectx.stroke();
+    } else {
+      drawDesign(ectx, dd, cx, cy, Rcut, "cut");
+      ectx.save(); ectx.beginPath(); ectx.arc(cx, cy, Rcut, 0, Math.PI * 2); ectx.arc(cx, cy, Rfin, 0, Math.PI * 2, true);
+      ectx.fillStyle = "rgba(30,20,20,.45)"; ectx.fill(); ectx.restore();
+      ectx.lineWidth = 2; ectx.strokeStyle = "#26201e"; ectx.beginPath(); ectx.arc(cx, cy, Rcut, 0, Math.PI * 2); ectx.stroke();
+      ectx.lineWidth = 3; ectx.strokeStyle = "#fff"; ectx.beginPath(); ectx.arc(cx, cy, Rfin, 0, Math.PI * 2); ectx.stroke();
+      ectx.setLineDash([12, 9]); ectx.lineWidth = 2.5; ectx.strokeStyle = "rgba(255,255,255,.95)"; ectx.beginPath(); ectx.arc(cx, cy, Rsafe, 0, Math.PI * 2); ectx.stroke();
+      ectx.lineDashOffset = 10; ectx.strokeStyle = "rgba(38,32,30,.9)"; ectx.beginPath(); ectx.arc(cx, cy, Rsafe, 0, Math.PI * 2); ectx.stroke();
+      ectx.setLineDash([]); ectx.lineDashOffset = 0;
+    }
+    if (!d || !d.img) {
+      ectx.fillStyle = "#5c5350"; ectx.font = "bold 34px sans-serif"; ectx.textAlign = "center"; ectx.textBaseline = "middle";
+      ectx.fillText("①で画像を選んでください", cx, cy);
+    }
+  }
+
+  // ===== 用紙 =====
+  function sequence() {
+    var seq = [];
+    designs.forEach(function (d, i) { for (var n = 0; n < d.count; n++) seq.push(i); });
+    return seq;
+  }
+  function pagesOf(C) {
+    var pos = pack(C), seq = sequence(), pages = [];
+    if (!pos.length) return { pos: pos, pages: [], all: 0 };
+    for (var i = 0; i < seq.length; i += pos.length) pages.push(seq.slice(i, i + pos.length));
+    var all = pages.length;
+    return { pos: pos, pages: pages.slice(0, MAX_PAGES), all: all };
+  }
+  function renderSheet(C, P, pi, dpi, list) {
+    list = list || designs;
+    var k = dpi / 25.4, cv = document.createElement("canvas");
+    cv.width = Math.round(C.W * k); cv.height = Math.round(C.H * k);
+    var ctx = cv.getContext("2d");
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cv.width, cv.height);
+    var page = P.pages[pi] || [], R = C.cut / 2 * k, lw = Math.max(1, 0.2 * k);
+    var cutLine = $("inCutLine").checked, finLine = $("inFinLine").checked, cross = $("inCross").checked;
+    page.forEach(function (di, n) {
+      var x = P.pos[n][0] * k, y = P.pos[n][1] * k, d = list[di];
+      if (!d) return;
+      drawDesign(ctx, d, x, y, R, "cut");
+      if (cutLine) { ctx.lineWidth = lw; ctx.strokeStyle = "#555"; ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI * 2); ctx.stroke(); }
+      if (finLine) { ctx.setLineDash([1.2 * k, 1.2 * k]); ctx.lineWidth = lw; ctx.strokeStyle = "#999"; ctx.beginPath(); ctx.arc(x, y, C.fin / 2 * k, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
+      if (cross) { ctx.lineWidth = lw; ctx.strokeStyle = "#555"; ctx.beginPath(); ctx.moveTo(x - 1.5 * k, y); ctx.lineTo(x + 1.5 * k, y); ctx.moveTo(x, y - 1.5 * k); ctx.lineTo(x, y + 1.5 * k); ctx.stroke(); }
+    });
+    // 下の余白に50mmの確認線とツール名(入る場所があるときだけ)
+    var bottom = 0;
+    P.pos.forEach(function (p) { bottom = Math.max(bottom, p[1] + C.cut / 2); });
+    var free = C.H - bottom;
+    ctx.fillStyle = "#666"; ctx.strokeStyle = "#666"; ctx.lineWidth = lw; ctx.textBaseline = "middle";
+    if (free >= 9) {
+      var y0 = Math.min((bottom + C.H) / 2, C.H - 5) * k, x0 = 10 * k;
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0 + 50 * k, y0);
+      for (var t = 0; t <= 50; t += 10) { ctx.moveTo(x0 + t * k, y0 - 1.2 * k); ctx.lineTo(x0 + t * k, y0 + 1.2 * k); }
+      ctx.stroke();
+      ctx.font = (2.6 * k) + "px sans-serif"; ctx.textAlign = "left";
+      ctx.fillText("50mm(定規で確認)", x0 + 52 * k, y0);
+      if (CREDIT) { ctx.textAlign = "right"; ctx.fillText("缶バッジテンプレートメーカー(無料版)", (C.W - 10) * k, y0); }
+    }
+    return cv;
+  }
+
+  var sheet = $("sheet"), P = null, C0 = null;
+  function refresh() {
+    C0 = conf(); P = pagesOf(C0);
+    var cap = P.pos.length;
+    if (sheetPage >= Math.max(1, P.pages.length)) sheetPage = Math.max(0, P.pages.length - 1);
+    var small = renderSheet(C0, P, sheetPage, 50);
+    sheet.width = small.width; sheet.height = small.height; sheet.getContext("2d").drawImage(small, 0, 0);
+    small.width = small.height = 0;
+    drawEditor();
+    var d = D(), total = sequence().length, has = designs.some(function (x) { return x.img; });
+    var shown = P.pages.reduce(function (s, p) { return s + p.length; }, 0);
+    var msg = !cap ? "この余白では円が入りません。余白を小さくしてください。"
+      : C0.paper + "用紙1枚に" + cap + "個" + (has ? "・全部で" + shown + "個(用紙" + P.pages.length + "枚)" : "");
+    if (has && P.all > MAX_PAGES) msg += "。" + MAX_PAGES + "枚目までを使います" + (EDITION === "full" ? "" : "(買い切り版は用紙20枚まで並べられます)");
+    $("sum").textContent = msg;
+    $("pager").classList.toggle("hidden", P.pages.length <= 1);
+    $("pageNo").textContent = (sheetPage + 1) + "枚目 / 全" + Math.max(1, P.pages.length) + "枚";
+    $("prevBtn").disabled = sheetPage <= 0; $("nextBtn").disabled = sheetPage >= P.pages.length - 1;
+    var ok = has && cap > 0 && total > 0;
+    $("printBtn").disabled = !ok || busy; $("pngBtn").disabled = !ok || busy;
+    
+    $("btnNeed").classList.toggle("hidden", has);
+    $("inCount").disabled = !d; $("fillBtn").disabled = !d || !cap;
+    $("fillBtn").textContent = "1枚ぶん(" + cap + "個)並べる";
+    if (d && document.activeElement !== $("inCount")) { $("inCount").value = d.count; }
+    $("inFile").disabled = busy;
+    $("cutWarn").textContent = (parseFloat($("inCut").value) || 0) <= C0.fin ? "切る円は、できあがりの直径より大きくしてください(いまは" + C0.cut + "mmで計算しています)。" : "";
+    $("countHint").textContent = EDITION === "full" ? "数の合計が1枚に入りきらないときは、用紙が増えます。" : "無料版は用紙1枚(" + cap + "個)までです。";
+    $("zoomVal").textContent = d ? Math.round(d.zoom * 100) + "%" : "";
+    if (d) { $("inZoom").value = Math.round(d.zoom * 100); $("inBg").value = d.bg; }
+    var dpi = effDpi(d, C0);
+    $("imgWarn").textContent = d && d.img && dpi < 200 ? "画像が小さめです(この大きさで約" + Math.round(dpi) + "dpi)。印刷するとぼやけることがあります。大きい画像を使うか、大きさを小さくしてください。" : "";
+  }
+  var timer = null;
+  function later() { clearTimeout(timer); timer = setTimeout(refresh, 120); }
+
+  // ===== 画像の読み込み =====
+  function loadImage(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file), im = new Image();
+      im.onload = function () {
+        URL.revokeObjectURL(url);
+        var w = im.naturalWidth, h = im.naturalHeight, sc = Math.min(1, MAX_IMG_PX / Math.max(w, h));
+        if (sc < 1) {
+          // 大きすぎる画像は縮めて持つ(メモリ節約)
+          var c = document.createElement("canvas"); c.width = Math.round(w * sc); c.height = Math.round(h * sc);
+          c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); resolve(c);
+        } else resolve(im);
+      };
+      im.onerror = function () { URL.revokeObjectURL(url); reject(new Error("img")); };
+      im.src = url;
+    });
+  }
+  $("inFile").addEventListener("change", function (e) {
+    var picked = Array.prototype.slice.call(e.target.files || []), files = picked.filter(function (f) { return /^image\//.test(f.type); });
+    if (!files.length) { if (picked.length) setSt("imgSt", "画像ファイル(PNG・JPEGなど)を選んでください。", true); e.target.value = ""; return; }
+    if (busy) { e.target.value = ""; return; }
+    var room = MAX_DESIGNS === 1 ? 1 : MAX_DESIGNS - designs.length;
+    if (room <= 0) { setSt("outSt", "絵柄は" + MAX_DESIGNS + "種類までです。", true); return; }
+    var skipped = files.length - room;
+    files = files.slice(0, room);
+    setSt("imgSt", "画像を読み込んでいます…");
+    Promise.all(files.map(function (f) { return loadImage(f).then(function (im) { return { img: im, name: f.name }; }, function () { return null; }); })).then(function (list) {
+      var bad = list.filter(function (x) { return !x; }).length;
+      list = list.filter(Boolean);
+      var cap = pack(conf()).length || 1, wasEmpty = !designs.length || MAX_DESIGNS === 1;
+      list.forEach(function (x) {
+        var d = { img: x.img, name: x.name, bg: "#ffffff", zoom: 1, ox: 0, oy: 0, rot: 0, count: 1 };
+        if (MAX_DESIGNS === 1) { designs = [d]; }
+        else designs.push(d);
+      });
+      // 空のところに入れたときは、用紙1枚ぶんを絵柄で分ける
+      if (wasEmpty && list.length) designs.forEach(function (d) { d.count = Math.max(1, Math.floor(cap / list.length)); });
+      if (list.length) cur = designs.length - list.length;
+      sheetPage = 0;
+      var m = list.length ? "画像を読み込みました。見本の上をドラッグして位置を合わせてください。" : "";
+      if (bad) m += " 読み込めない画像がありました(" + bad + "枚)。";
+      if (skipped > 0) m += " 絵柄は" + MAX_DESIGNS + "種類までなので、" + skipped + "枚は入れていません。";
+      setSt("outSt", m.trim(), !list.length);
+      setSt("imgSt", m.trim(), !list.length);
+      refresh();
+      track("badge_load", { n: list.length, size: conf().fin });
+    });
+    e.target.value = "";
+  });
+
+  // ===== 調整 =====
+  function edit(fn) { var d = D(); if (!d) return; fn(d); later(); }
+  $("inZoom").addEventListener("input", function () { var v = +this.value / 100; edit(function (d) { d.zoom = v; }); });
+  $("inBg").addEventListener("input", function () { var v = this.value; edit(function (d) { d.bg = v; }); });
+  $("rotBtn").addEventListener("click", function () { edit(function (d) { d.rot = (d.rot + 1) % 4; }); });
+  $("centerBtn").addEventListener("click", function () { edit(function (d) { d.ox = 0; d.oy = 0; d.zoom = 1; }); });
+  $("inCount").addEventListener("input", function () {
+    var v = Math.max(1, Math.min(999, Math.floor(+this.value) || 1));
+    if (EDITION !== "full") v = Math.min(v, pack(conf()).length || 1);
+    edit(function (d) { d.count = v; });
+  });
+  $("inCount").addEventListener("change", refresh);
+  $("fillBtn").addEventListener("click", function () { var cap = pack(conf()).length; edit(function (d) { d.count = cap; }); });
+  $("inSize").addEventListener("change", function () {
+    $("inCut").value = CUT[this.value];
+    
+    clampFree(); refresh();
+  });
+  function clampFree() {
+    if (EDITION === "full") return;
+    var cap = pack(conf()).length || 1;
+    designs.forEach(function (d) { d.count = Math.min(d.count, cap); });
+  }
+  ["inCut", "inMargin", "inGap"].forEach(function (id) { $(id).addEventListener("input", function () { clampFree(); later(); }); });
+  ["inPaper", "inCutLine", "inFinLine", "inCross", "inLook"].forEach(function (id) { $(id).addEventListener("change", function () { clampFree(); refresh(); }); });
+  $("prevBtn").addEventListener("click", function () { if (sheetPage > 0) { sheetPage--; refresh(); } });
+  $("nextBtn").addEventListener("click", function () { if (P && sheetPage < P.pages.length - 1) { sheetPage++; refresh(); } });
+
+  // ドラッグで位置(画面の大きさに関係なく、切る円の直径に対する割合で持つ)
+  var drag = null;
+  ed.addEventListener("pointerdown", function (e) {
+    var d = D(); if (!d) return;
+    drag = { x: e.clientX, y: e.clientY, ox: d.ox, oy: d.oy };
+    ed.setPointerCapture(e.pointerId); ed.classList.add("drag");
+  });
+  ed.addEventListener("pointermove", function (e) {
+    var d = D(); if (!drag || !d) return;
+    var r = ed.getBoundingClientRect(), dia = r.width * 0.92;
+    d.ox = drag.ox + (e.clientX - drag.x) / dia; d.oy = drag.oy + (e.clientY - drag.y) / dia;
+    drawEditor(); later();
+  });
+  function endDrag() { drag = null; ed.classList.remove("drag"); }
+  ed.addEventListener("pointerup", endDrag); ed.addEventListener("pointercancel", endDrag);
+  ed.addEventListener("keydown", function (e) {
+    var map = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }, v = map[e.key];
+    if (!v || !D()) return;
+    e.preventDefault();
+    var st = e.shiftKey ? 0.05 : 0.01;
+    edit(function (d) { d.ox += v[0] * st; d.oy += v[1] * st; });
+    posMsg();
+  });
+  function posMsg() { var d = D(); if (d) setSt("posSt", "位置: 横" + Math.round(d.ox * 100) + "・縦" + Math.round(d.oy * 100) + "(切る円の直径に対する%)"); }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-mv]"), function (b) {
+    b.addEventListener("click", function () {
+      var v = b.getAttribute("data-mv").split(",").map(Number);
+      edit(function (d) { d.ox += v[0] * 0.01; d.oy += v[1] * 0.01; });
+      posMsg();
+    });
+  });
+
+  // ===== 印刷・保存 =====
+  var busy = false;
+  function toBlob(c) { return new Promise(function (res) { c.toBlob(function (b) { res(b); }, "image/png"); }); }
+  function download(blob, name) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  }
+  function sheetName(C, i, n) { return "缶バッジ_" + C.fin + "mm_" + C.paper + (n > 1 ? "_" + String(i + 1).padStart(2, "0") : "") + ".png"; }
+  function sheetBlobs(C, Pp, only) {
+    // 作っている間に絵柄が外されても困らないように、絵柄の一覧を写しておく
+    var idx = only == null ? Pp.pages.map(function (_, i) { return i; }) : [only], out = [], n = 0, snap = designs.slice();
+    return new Promise(function (resolve, reject) {
+      (function next() {
+        if (n >= idx.length) { resolve(out); return; }
+        var c;
+        try { c = renderSheet(C, Pp, idx[n], sheetDpi(C), snap); } catch (err) { reject(err); return; }
+        toBlob(c).then(function (b) { c.width = c.height = 0; if (!b) { reject(new Error("blob")); return; } out.push({ i: idx[n], blob: b }); n++; next(); }, reject);
+      })();
+    });
+  }
+  function setBusy(v) { busy = v; refresh(); }
+
+  var printUrls = [];
+  function clearPrint() { printUrls.forEach(function (u) { URL.revokeObjectURL(u); }); printUrls = []; $("printArea").textContent = ""; document.body.classList.remove("printing"); }
+  $("printBtn").addEventListener("click", function () {
+    if (busy || !P || !P.pages.length) return;
+    clearPrint(); setBusy(true);
+    setSt("outSt", "印刷用の画像を作っています…");
+    var C = C0, Pp = P;
+    $("pageStyle").textContent = "@page { size: " + C.paper + " portrait; margin: 0; }";
+    sheetBlobs(C, Pp).then(function (list) {
+      var loads = list.map(function (x) {
+        return new Promise(function (res) {
+          var u = URL.createObjectURL(x.blob), im = new Image();
+          printUrls.push(u);
+          im.style.width = C.W + "mm"; im.style.height = C.H + "mm";
+          im.onload = im.onerror = function () { res(); };
+          im.alt = ""; im.src = u; $("printArea").appendChild(im);
+        });
+      });
+      return Promise.all(loads);
+    }).then(function () {
+      document.body.classList.add("printing");
+      setBusy(false);
+      setSt("outSt", "印刷画面を開きました。倍率は「100%」「実際のサイズ」で印刷してください。");
+      track("badge_print", { size: C.fin, pages: Pp.pages.length, designs: designs.length });
+      setTimeout(function () { window.print(); }, 50);
+    }).catch(function () { setBusy(false); clearPrint(); setSt("outSt", "印刷用の画像を作れませんでした。", true); });
+  });
+  window.addEventListener("afterprint", function () { setTimeout(clearPrint, 300); });
+
+  $("pngBtn").addEventListener("click", function () {
+    if (busy || !P || !P.pages.length) return;
+    setBusy(true);
+    var C = C0, Pp = P, pg = sheetPage;
+    sheetBlobs(C, Pp, pg).then(function (list) {
+      download(list[0].blob, sheetName(C, pg, Pp.pages.length));
+      setSt("outSt", (Pp.pages.length > 1 ? (pg + 1) + "枚目の" : "") + "用紙を画像(" + sheetDpi(C) + "dpi)で保存しました。コンビニなどで印刷するときは「等倍」で。");
+      track("badge_save", { via: "png", size: C.fin });
+    }).catch(function () { setSt("outSt", "画像を作れませんでした。", true); })
+      .then(function () { setBusy(false); });
+  });
+
+  
+
+  if (EDITION === "full") {
+    $("pro-section").classList.add("hidden");
+  }
+  if (EDITION !== "full") {
+    $("privacyNote").innerHTML = '選んだ画像はどこにも送信されません(すべてこのブラウザの中で処理します)。このページでは利用状況の把握のためにアクセス解析(Google Analytics)を使っています。<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleによるデータの使用について</a>';
+  }
+
+  refresh();
+})();
+</script>
+<!--UPSELL_JS_START-->
+<script>
+(function () {
+  "use strict";
+  var q = new URLSearchParams(location.search);
+  if (q.get("obs") === "1" || document.documentElement.classList.contains("obs")) return;
+  // 小さな案内(トースト)は、買い切り版がパソコン向けなので、マウス操作の広い画面でだけ出す
+  var pc = !!(window.matchMedia && matchMedia("(pointer:fine) and (min-width:720px)").matches);
+  var buy = document.getElementById("buyLink");
+  var pro = document.getElementById("pro-section");
+  if (!buy || !pro) return;
+  var FEATS = [];
+  var path = location.pathname.replace(/index\.html$/, "");
+  var KEY_CLOSED = "upsell_closed_until:" + path, KEY_SHOWN = "upsell_shown:" + path;
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  function sess(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } }
+  function gtagEv(name, p) { if (!window.dataLayer) return; (function () { window.dataLayer.push(arguments); })("event", name, p || {}); }
+
+  var shown = false;
+  function blocked() {
+    if (shown || sess(KEY_SHOWN) === "1") return true;
+    var until = Number(store(KEY_CLOSED) || 0);
+    return until && Date.now() < until;
+  }
+  function feats() {
+    if (FEATS.length) return FEATS;
+    var out = [];
+    var lis = pro.querySelectorAll(".feat-list li");
+    for (var i = 0; i < lis.length && out.length < 3; i++) {
+      var all = lis[i].textContent.replace(/\s+/g, " ").trim();
+      if (/スマホ|HTMLファイル|パソコンで使う/.test(all)) continue;
+      var st = lis[i].querySelectorAll("strong");
+      var t = st.length === 1 ? st[0].textContent : all.split(/[::。]/)[0];
+      t = t.replace(/[((][^()()]*[))]/g, "").replace(/\s+/g, " ").trim();
+      if (t.length > 40) t = t.slice(0, 39) + "…";
+      if (t) out.push(t);
+    }
+    return out;
+  }
+  // 「〜してください」「できません」など、失敗の表示が出ていたら案内しない
+  function failed() {
+    var els = document.querySelectorAll('[role="status"], [role="alert"], [aria-live]');
+    for (var i = 0; i < els.length; i++) {
+      if (pro.contains(els[i]) || !els[i].offsetParent) continue;
+      if (/ください|できません|できませんでした|失敗|ありません|エラー/.test(els[i].textContent)) return true;
+    }
+    return false;
+  }
+  function proVisible() {
+    var r = pro.getBoundingClientRect();
+    return r.top < innerHeight && r.bottom > 0;
+  }
+  function show(trigger) {
+    if (!pc || blocked() || (trigger === "action" && failed()) || proVisible()) return;
+    var list = feats();
+    if (!list.length) return;
+    shown = true;
+    sess(KEY_SHOWN, "1");
+    var box = document.createElement("aside");
+    box.className = "upsell-toast";
+    box.setAttribute("aria-label", "買い切り版のご案内");
+    box.setAttribute("aria-live", "polite");
+    document.body.appendChild(box);
+    var p = document.createElement("p");
+    p.textContent = trigger === "limit"
+      ? "この先は買い切り版の機能です。パソコン用の買い切り版(¥100・税込)なら:"
+      : "うまくできましたか? パソコン用の買い切り版(¥100・税込)なら、さらに:";
+    var ul = document.createElement("ul");
+    list.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+    var a = document.createElement("a");
+    a.className = "upsell-go";
+    a.id = "upsellToastLink";
+    a.href = buy.href;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = "BOOTHで見る(新しいタブ)";
+    var bg = getComputedStyle(buy).backgroundColor;
+    if (bg && !/rgba?\(0, 0, 0, 0\)|transparent/.test(bg)) a.style.background = bg;
+    var x = document.createElement("button");
+    x.type = "button";
+    x.className = "upsell-x";
+    x.setAttribute("aria-label", "この案内を閉じる");
+    x.textContent = "×";
+    function close(remember) {
+      if (box.parentNode) box.parentNode.removeChild(box);
+      document.removeEventListener("keydown", onKey);
+      if (remember) store(KEY_CLOSED, String(Date.now() + 7 * 864e5));
+    }
+    // Escはページ側の操作(選択解除など)にも使われるので、案内の中にフォーカスがある時だけ閉じる
+    function onKey(e) { if (e.key === "Escape" && box.contains(document.activeElement)) close(true); }
+    x.addEventListener("click", function () { close(true); });
+    a.addEventListener("click", function () { setTimeout(function () { close(false); }, 0); });
+    document.addEventListener("keydown", onKey);
+    setTimeout(function () {
+      var note = document.createElement("small");
+      note.className = "upsell-note";
+      note.textContent = "スマホではファイルを開けない機種があります";
+      box.appendChild(x); box.appendChild(p); box.appendChild(ul); box.appendChild(a); box.appendChild(note);
+    }, 50);
+    gtagEv("upsell_show", { trigger: trigger });
+  }
+
+  // 保存・コピー・印刷・書き出しを押した直後(結果を受け取れたタイミング)
+  var OK = /保存|コピー|印刷|書き出|ダウンロード|共有|PDF/;
+  var NG = /読み込|リセット|消|削除|このブラウザに保存|確認|イメージを見る|戻/;
+  document.addEventListener("click", function (e) {
+    var el = e.target && e.target.closest ? e.target.closest("button, a[download], input[type=button], input[type=submit]") : null;
+    if (!el || el.closest("#pro-section, .upsell-toast, #anshin")) return;
+    var label = (el.textContent || el.value || "").replace(/\s+/g, " ");
+    if (!OK.test(label) || NG.test(label)) return;
+    setTimeout(function () { show("action"); }, 1500);
+  }, true);
+
+  // 無料版の上限まわり
+  // (1) ページが出す「買い切り版」の一文に、購入欄へのリンクを足す(スマホでも)。🔒のタブは薄く表示されているので入れない
+  // (2) 案内(パソコンのみ)は、はっきりした合図のときだけ出す: 🔒のクリック・買い切り版にふれたalert・
+  //     初めて出た「〜まで/のみ/以降/入っていません」の上限の一文(計算のたびに出る誘導文や、同じ文の描き直しでは出さない)
+  var SKIP = "#pro-section, .upsell-toast, .upsell-top, #anshin, a, button, label, select, option, h1, h2, h3, .badge, header, footer, nav, textarea, pre, code, [contenteditable], svg";
+  var LIMIT = /まで|のみ|以降|入っていません/;
+  var seenText = {}, ready = false;
+  function goPro(e) {
+    if (e) e.preventDefault();
+    pro.setAttribute("tabindex", "-1");
+    pro.scrollIntoView({ behavior: "smooth", block: "start" });
+    pro.focus({ preventScroll: true });
+  }
+  function linkify(root, deep) {
+    var limitHit = false;
+    var els = root.matches("p, div, span, li") ? [root] : [];
+    if (deep) els = els.concat([].slice.call(root.querySelectorAll("p, div, span, li")));
+    els.forEach(function (el) {
+      if (el.closest(SKIP) || el.closest('[role="radio"], [role="option"], [role="tab"], [role="button"], [tabindex]:not([tabindex="-1"])') || el.querySelector("a, button, p, div, li, input, label")) return;
+      // 選択肢の「○○(買い切り版)」ではなく、文として買い切り版にふれている要素だけ
+      var own = "";
+      for (var n = el.firstChild; n; n = n.nodeType === 1 && n.className === "upsell-inline" ? null : n.nextSibling) if (n.nodeType === 3) own += n.nodeValue;
+      own = own.trim();
+      if (own.indexOf("買い切り版") < 0 || /[((]買い切り版[))]$/.test(own) || /^🔒/.test(own)) return;
+      var key = own.replace(/\d+/g, "#");
+      if (ready && !seenText[key] && LIMIT.test(own) && !el.closest(".teaser, #teaser, [id$=teaser], #tz")) limitHit = true;
+      seenText[key] = 1;
+      if (el.querySelector(".upsell-inline")) return;
+      var a = document.createElement("a");
+      a.className = "upsell-inline";
+      a.href = "#pro-section";
+      a.setAttribute("aria-label", "くわしく:買い切り版の説明へ移動");
+      a.textContent = "くわしく";
+      var ar = document.createElement("span");
+      ar.setAttribute("aria-hidden", "true");
+      ar.textContent = " ↓";
+      a.appendChild(ar);
+      a.addEventListener("click", goPro);
+      el.appendChild(document.createTextNode(" "));
+      el.appendChild(a);
+    });
+    return limitHit;
+  }
+  linkify(document.body, true);
+  setTimeout(function () { ready = true; }, 1500);
+  var topLink = document.querySelector("#upsellTop a");
+  if (topLink) topLink.addEventListener("click", goPro);
+  new MutationObserver(function (ms) {
+    // 変わったところだけを調べる(足された要素はその中も、文字の変更は親要素だけ)
+    var hit = false, done = new Set();
+    function check(t, deep) {
+      if (!t || t.nodeType !== 1 || done.has(t) || t.closest(".upsell-toast")) return;
+      done.add(t);
+      if (linkify(t, deep)) hit = true;
+    }
+    ms.forEach(function (m) {
+      if (m.type === "characterData") { check(m.target.parentNode, false); return; }
+      check(m.target, false);
+      for (var i = 0; i < m.addedNodes.length; i++) if (m.addedNodes[i].nodeType === 1) check(m.addedNodes[i], true);
+    });
+    if (hit) setTimeout(function () { show("limit"); }, 800);
+  }).observe(document.body, { childList: true, subtree: true, characterData: true });
+  document.addEventListener("click", function (e) {
+    var el = e.target && e.target.closest ? e.target.closest("button, div, span, li") : null;
+    var first = el && el.firstChild && el.firstChild.nodeType === 3 ? el.firstChild.nodeValue : "";
+    if (!/^\s*🔒/.test(first) || e.target.closest("#pro-section")) return;
+    if (pc) setTimeout(function () { show("limit"); }, 300); else goPro();
+  }, true);
+  var origAlert = window.alert;
+  window.alert = function (msg) {
+    var r = origAlert.apply(window, arguments);
+    if (/買い切り版/.test(String(msg))) setTimeout(function () { show("limit"); }, 300);
+    return r;
+  };
+})();
+</script>
+<!--UPSELL_JS_END-->
+</body>
+</html>
